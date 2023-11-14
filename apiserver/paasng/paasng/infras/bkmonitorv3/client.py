@@ -258,7 +258,7 @@ def _make_bk_minotor_backend() -> BkMonitorBackend:
     if settings.ENABLE_BK_MONITOR_APIGW:
         apigw_client = Client(
             endpoint=settings.BK_API_URL_TMPL,
-            stage=settings.BK_MONITOR_APIGW_SERVICE_STAGE,
+            stage="prod",
         )
         apigw_client.update_bkapi_authorization(
             bk_app_code=settings.BK_APP_CODE,
