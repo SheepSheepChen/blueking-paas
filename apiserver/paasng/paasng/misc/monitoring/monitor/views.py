@@ -63,7 +63,8 @@ from .serializers import (
     SupportedAlertSLZ,
 )
 
-
+import logging
+logger = logging.getLogger(__name__)
 class EventRecordView(ViewSet, ApplicationCodeInPathMixin):
     permission_classes = [IsAuthenticated, application_perm_class(AppAction.VIEW_ALERT_RECORDS)]
 
@@ -256,7 +257,7 @@ class ListAlertsView(ViewSet, ApplicationCodeInPathMixin):
             alerts = make_bk_monitor_client().query_alerts(serializer.validated_data)
         except BkMonitorGatewayServiceError as e:
             raise error_codes.QUERY_ALERTS_FAILED.f(str(e))
-
+        logger.warning(alerts)
         serializer = AlertSLZ(alerts, many=True)
         return Response(serializer.data)
 
