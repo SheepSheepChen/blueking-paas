@@ -167,6 +167,7 @@ class BkMonitorClient:
         """
         try:
             resp = self.client.search_alert(json=query_params.to_dict())
+            logger.warning(resp)
         except APIGatewayResponseError:
             # 详细错误信息 bkapi_client_core 会自动记录
             raise BkMonitorGatewayServiceError('an unexpected error when request bkmonitor apigw')
