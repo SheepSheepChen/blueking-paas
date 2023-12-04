@@ -163,9 +163,6 @@ func main() {
 		}
 	}
 
-	// register metrcis route
-	http.Handle("/metrics", promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
-
 	//+kubebuilder:scaffold:builder
 	if err = mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
 		setupLog.Error(err, "unable to set up health check")
@@ -175,6 +172,10 @@ func main() {
 		setupLog.Error(err, "unable to set up ready check")
 		os.Exit(1)
 	}
+
+	// register metrcis route
+	promHandler := promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{})
+	mgr.GetWebhookServer().Register("/metrics", promHandler)
 
 	setupLog.Info("starting manager")
 	if err = mgr.Start(ctrl.SetupSignalHandler()); err != nil {
