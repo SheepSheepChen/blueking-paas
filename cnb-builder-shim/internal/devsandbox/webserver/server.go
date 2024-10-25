@@ -26,8 +26,10 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/caarlos0/env/v10"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-logr/logr"
 
@@ -62,6 +64,16 @@ func New(lg *logr.Logger) (*WebServer, error) {
 
 	r := gin.Default()
 	r.Use(tokenAuthMiddleware(cfg.Token))
+
+	// 添加跨域中间件
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},                                       // 允许所有来源
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, // 允许的HTTP方法
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // 允许的请求头
+		ExposeHeaders:    []string{"Content-Length"},                          // 暴露的响应头
+		AllowCredentials: true,                                                // 凭证共享
+		MaxAge:           12 * time.Hour,                                      // 预检请求缓存时间
+	}))
 
 	s := &WebServer{
 		server: r,
