@@ -63,17 +63,17 @@ func New(lg *logr.Logger) (*WebServer, error) {
 	}
 
 	r := gin.Default()
-	r.Use(tokenAuthMiddleware(cfg.Token))
-
 	// 添加跨域中间件
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},                                       // 允许所有来源
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, // 允许的HTTP方法
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // 允许的请求头
-		ExposeHeaders:    []string{"Content-Length"},                          // 暴露的响应头
-		AllowCredentials: true,                                                // 凭证共享
-		MaxAge:           12 * time.Hour,                                      // 预检请求缓存时间
+		AllowOrigins:     []string{"http://paasng-t.v3-t.open.woa.com:6060"},                 // 允许所有来源
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},                // 允许的HTTP方法
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "X-Csrftoken"}, // 允许的请求头
+		ExposeHeaders:    []string{"Content-Length"},                                         // 暴露的响应头
+		AllowCredentials: true,                                                               // 凭证共享
+		MaxAge:           12 * time.Hour,                                                     // 预检请求缓存时间
 	}))
+
+	r.Use(tokenAuthMiddleware(cfg.Token))
 
 	s := &WebServer{
 		server: r,
