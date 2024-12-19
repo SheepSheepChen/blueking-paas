@@ -52,6 +52,7 @@ var reloadCmd = &cobra.Command{
 			logger.Error(err, "parse invalid app_desc.yaml")
 			return err
 		}
+		logger.Error(err, "pre release hook", appDesc.GetPreReleaseHook())
 
 		if err = devlaunch.Run(md.Processes, appDesc); err != nil {
 			logger.Error(err, "failed to hot launch")
