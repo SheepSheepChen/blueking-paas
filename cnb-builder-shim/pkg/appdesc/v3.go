@@ -18,7 +18,10 @@
 
 package appdesc
 
-import "github.com/TencentBlueking/bkpaas/cnb-builder-shim/internal/devsandbox/config"
+import (
+	"fmt"
+	"github.com/TencentBlueking/bkpaas/cnb-builder-shim/internal/devsandbox/config"
+)
 
 // EnvV3 ...
 type EnvV3 struct {
@@ -103,9 +106,11 @@ func (d *AppDescV3) GetProcesses() []Process {
 // GetPreReleaseHook ...
 func (d *AppDescV3) GetPreReleaseHook() string {
 	module := d.GetModule()
+	fmt.Println("modulev3", module)
 	if module == nil {
 		return ""
 	}
+	fmt.Println("PreReleaseHook v3", module.Spec.Hooks.PreRelease.ProcCommand)
 	return module.Spec.Hooks.PreRelease.ProcCommand
 }
 

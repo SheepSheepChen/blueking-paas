@@ -18,7 +18,10 @@
 
 package appdesc
 
-import "github.com/TencentBlueking/bkpaas/cnb-builder-shim/internal/devsandbox/config"
+import (
+	"fmt"
+	"github.com/TencentBlueking/bkpaas/cnb-builder-shim/internal/devsandbox/config"
+)
 
 // ProcessV2 ...
 type ProcessV2 struct {
@@ -81,9 +84,11 @@ func (d *AppDescV2) GetProcesses() []Process {
 // GetPreReleaseHook ...
 func (d *AppDescV2) GetPreReleaseHook() string {
 	module := d.GetModule()
+	fmt.Println("modulev2", module)
 	if module == nil {
 		return ""
 	}
+	fmt.Println("PreReleaseHook v2", module.Scripts.PreReleaseHook)
 	return module.Scripts.PreReleaseHook
 }
 
