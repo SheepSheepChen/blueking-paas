@@ -236,6 +236,12 @@ class AppAdaptor:
             {"state": LegacyAppState.OUTLINE.value, "is_already_test": False, "is_already_online": False}
         )
 
+    def cascade_delete(self, code: str):
+        """删除外键链接了此应用的所有数据，并且删除该应用"""
+        LApplicationStarAdaptor(self.session).delete_by_app_code(code)
+        self.session.query(self.model).filter_by(code=code).delete()
+        self.session.commit()
+
 
 class AppTagAdaptor:
     def __init__(self, session: Session):
@@ -495,3 +501,12 @@ class EngineAppAdaptor:
     def get(self, code: str) -> "legacy_models.LEngineApp":
         app = self.session.query(self.model).filter_by(app_code=code).scalar()
         return app
+
+
+class LApplicationStarAdaptor:
+    def __init__(self, session: Session):
+        self.session = session
+        self.model = legacy_models.LApplicationStar
+
+    def delete_by_app_code(self, code: str):
+        self.session.query(self.model).filter_by(app_code=code).delete()

@@ -34,6 +34,7 @@ LApplicationConfigVar = legacy_db.get_model("paas_app_envvars")
 LApplicationReleaseRecord = legacy_db.get_model("paas_release_record")
 LApplicationUseRecord = legacy_db.get_model("console_analysis_appuserecord")
 LApplicationTag = legacy_db.get_model("paas_apptags")
+LApplicationStar = legacy_db.get_model("paas_app_star")
 
 LAppDeveloper = legacy_db.get_model("paas_app_developer")
 LUser = legacy_db.get_model("account_bkuser")
